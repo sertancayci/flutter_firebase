@@ -18,14 +18,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     notifacationServices.refreshToken();
-    notifacationServices.requestNotificationPermissions();
+    notifacationServices.initPushNotifications(context);
+    notifacationServices.setupInteractMessage(context);
+
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Home Page1')),
+      body: Center(child: Text('Home Page')),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/firebase_options.dart';
 import 'package:flutter_firebase/pages/home/home_page.dart';
@@ -15,7 +16,14 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.notification!.title.toString()}');
 }
 
 class MyApp extends StatelessWidget {
@@ -38,10 +46,6 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const HomePage(),
-      routes: {
-        // HomePage.route: (context) => const HomePage(title: 'Flutter Demo Home Page'),
-        NotificationScreen.route: (context) => const NotificationScreen(),
-      },
     );
   }
 }
